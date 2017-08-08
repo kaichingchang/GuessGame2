@@ -1,5 +1,5 @@
 //
-//  檔名： ViewController.swift
+//  檔名： ResultController.swift
 //  專案： GuessGame2
 //
 //  《Swift 入門指南》 V3.00 的範例程式
@@ -18,32 +18,41 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ResultController: UIViewController {
     //MARK: 屬性
     
     //Core data
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     var tasks: [Score] = []
-
+    
+    //MARK: 視窗元件屬性
+    @IBOutlet weak var resultTable: UITextView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //清除 Core Data 中的所有資料
+        //載入後抓取資料
         do {
             tasks = try context.fetch(Score.fetchRequest())
+            
+            //顯示成績
             for item in tasks {
-                context.delete(item)
+                let a = item.answer
+                let b = item.times
+                resultTable.text? += "\n" + String(a) + " - " + String(b)
             }
         }
         catch {
             print("Fetching Failed")
         }
+        
+       
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-
-
+    
+    
 }
-
